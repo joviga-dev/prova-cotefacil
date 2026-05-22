@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - prova-network
+
+  api-pedidos:
+    build:
+      context: ./api-pedidos
+    container_name: api-pedidos
+    ports:
+      - "8081:8081"
+    networks:
+      - prova-network
+
+networks:
+  prova-network:
+    driver: bridge
