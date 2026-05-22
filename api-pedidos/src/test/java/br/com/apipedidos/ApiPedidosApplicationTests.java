@@ -1,10 +1,10 @@
-package br.com.apicrudpedidos;
+package br.com.apipedidos;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiCrudPedidosApplicationTests {
+class ApiPedidosApplicationTests {
 
     @Test
     void contextLoads() {

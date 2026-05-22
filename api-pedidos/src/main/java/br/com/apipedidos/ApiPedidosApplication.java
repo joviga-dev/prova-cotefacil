@@ -1,13 +1,13 @@
-package br.com.apicrudpedidos;
+package br.com.apipedidos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ApiCrudPedidosApplication {
+public class ApiPedidosApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ApiCrudPedidosApplication.class, args);
+        SpringApplication.run(ApiPedidosApplication.class, args);
     }
 
 }
