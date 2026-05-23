@@ -4,8 +4,8 @@ services:
 
   api-gateway:
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
     container_name: api-gateway
     ports:
       - "8080:8080"
@@ -14,8 +14,8 @@ services:
 
   api-pedidos:
     build:
-      context: ./api-pedidos
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./api-pedidos/Dockerfile
     container_name: api-pedidos
     ports:
       - "8081:8081"
