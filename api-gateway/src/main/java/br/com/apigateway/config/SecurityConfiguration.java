@@ -1,6 +1,7 @@
 package br.com.apigateway.config;
 
 import br.com.apigateway.service.auth.UserAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +26,7 @@ public class SecurityConfiguration {
     private UserAuthenticationFilter userAuthenticationFilter;
 
     public static final String []   ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/auth/login",
-            "/test"
+            "/auth/login"
     };
 
     @Bean
@@ -39,6 +39,23 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(ex ->
+                        ex.authenticationEntryPoint(
+                                (request, response, authException) -> {
+
+                                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                    response.setContentType("application/json");
+
+                                    response.getWriter().write("""
+                            {
+                              "status": 401,
+                              "error": "UNAUTHORIZED",
+                              "message": "%s"
+                            }
+                            """.formatted(authException.getMessage()));
+                                }
+                        )
+                )
                 .build();
     }
 
