@@ -25,8 +25,11 @@ public class SecurityConfiguration {
     @Autowired
     private UserAuthenticationFilter userAuthenticationFilter;
 
-    public static final String []   ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/auth/login"
+    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
+            "/auth/login",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
     };
 
     @Bean

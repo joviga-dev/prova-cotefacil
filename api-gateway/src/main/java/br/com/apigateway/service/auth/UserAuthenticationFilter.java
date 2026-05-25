@@ -36,8 +36,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
                 User user = userRepository.findByUsername(subject).get();
                 UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
-                Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
@@ -56,8 +55,20 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
+
         String requestURI = request.getRequestURI();
-        return !Arrays.asList(SecurityConfiguration.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).contains(requestURI);
+
+        return Arrays.stream(SecurityConfiguration.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).noneMatch(endpoint -> {
+
+            if (endpoint.endsWith("/**")) {
+
+                String basePath = endpoint.replace("/**", "");
+
+                return requestURI.startsWith(basePath);
+            }
+
+            return requestURI.equals(endpoint);
+        });
     }
 
 }
