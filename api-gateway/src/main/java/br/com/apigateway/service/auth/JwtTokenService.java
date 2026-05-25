@@ -25,6 +25,13 @@ public class JwtTokenService {
                     .withIssuedAt(creationDate())
                     .withExpiresAt(expirationDate())
                     .withSubject(user.getUsername())
+                    .withClaim(
+                            "roles",
+                            user.getRoles()
+                                    .stream()
+                                    .map(role -> "ROLE_" + role.getName())
+                                    .toList()
+                    )
                     .sign(algorithm);
         } catch (JWTCreationException exception){
             throw new JWTCreationException("Erro ao gerar token.", exception);
