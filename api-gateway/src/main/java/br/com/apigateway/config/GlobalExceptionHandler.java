@@ -1,6 +1,9 @@
 package br.com.apigateway.config;
 
 import br.com.apigateway.dto.auth.ErrorResponseDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,13 +118,22 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleWebClientResponseException(
             WebClientResponseException e,
             HttpServletRequest request
-    ) {
+    ) throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        JsonNode body =
+                mapper.readTree(e.getResponseBodyAsString());
+
+        String originalMessage =
+                body.path("message").asText();
+
         return ResponseEntity.status(e.getStatusCode())
                 .body(new ErrorResponseDto(
                         LocalDateTime.now(),
                         e.getStatusCode().value(),
                         e.getStatusCode().toString(),
-                        e.getMessage(),
+                        originalMessage,
                         request.getRequestURI()
                 ));
     }
