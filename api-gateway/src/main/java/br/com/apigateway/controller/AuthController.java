@@ -6,6 +6,7 @@ import br.com.apigateway.service.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class AuthController {
     @Operation(summary = "Realiza login e retorna um JWT")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @PostMapping("/login")
-    public ResponseEntity<RecoveryJwtTokenDto> authenticateUser(@RequestBody LoginDto loginUserDto) {
+    public ResponseEntity<RecoveryJwtTokenDto> authenticateUser(@RequestBody @Valid LoginDto loginUserDto) {
         RecoveryJwtTokenDto token = authService.authenticateUser(loginUserDto);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
