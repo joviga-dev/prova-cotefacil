@@ -1,5 +1,3 @@
-# Prova Cote Fácil
-
 Sistema composto por dois microsserviços desenvolvidos com Spring Boot:
 
 - `api-gateway`: responsável pela autenticação JWT, autorização e roteamento das requisições.
