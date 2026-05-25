@@ -17,8 +17,8 @@ services:
       context: .
       dockerfile: ./api-pedidos/Dockerfile
     container_name: api-pedidos
-    ports:
-      - "8081:8081"
+    expose:
+      - "8080"
     networks:
       - prova-network
 
