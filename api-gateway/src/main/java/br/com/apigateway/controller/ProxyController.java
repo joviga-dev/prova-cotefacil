@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @RestController
 @RequestMapping("/api/orders")
+@EnableMethodSecurity
 @Tag(name = "Pedidos", description = "Proxy responsável por encaminhar requisições para a API de pedidos")
 public class ProxyController {
 
@@ -26,6 +29,7 @@ public class ProxyController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Listar pedidos")
     public Object findAllOrders(@Parameter(hidden = true) Pageable pageable,
                                 @Parameter(hidden = true) HttpServletRequest request) {
@@ -38,6 +42,7 @@ public class ProxyController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Buscar pedido por ID")
     public Object findOrderById(@PathVariable Long id,
                                 @Parameter(hidden = true) HttpServletRequest request) {
@@ -49,6 +54,7 @@ public class ProxyController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Criar pedido")
     public Object createOrder(@RequestBody Object body,
                               @Parameter(hidden = true) HttpServletRequest request) {
@@ -61,6 +67,7 @@ public class ProxyController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Atualizar pedido")
     public Object updateOrder(@PathVariable Long id, @RequestBody Object body,
                               @Parameter(hidden = true) HttpServletRequest request) {
@@ -73,6 +80,7 @@ public class ProxyController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Deletar pedido")
     public void deleteOrder(@PathVariable Long id,
                             @Parameter(hidden = true) HttpServletRequest request) {
@@ -84,6 +92,7 @@ public class ProxyController {
     }
 
     @GetMapping("/{id}/items")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Listar itens do pedido")
     public Object findItems(@PathVariable Long id,
                             @Parameter(hidden = true) HttpServletRequest request) {
@@ -95,6 +104,7 @@ public class ProxyController {
     }
 
     @PostMapping("/{id}/items")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Adicionar item ao pedido")
     public Object addItem(@PathVariable Long id, @RequestBody Object body,
                           @Parameter(hidden = true) HttpServletRequest request) {
