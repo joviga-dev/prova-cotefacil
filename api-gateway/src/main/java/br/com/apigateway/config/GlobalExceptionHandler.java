@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import javax.naming.AuthenticationException;
 import java.nio.file.AccessDeniedException;
@@ -105,6 +106,21 @@ public class GlobalExceptionHandler {
                         LocalDateTime.now(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value(),
                         HttpStatus.INTERNAL_SERVER_ERROR.name(),
+                        e.getMessage(),
+                        request.getRequestURI()
+                ));
+    }
+
+    @ExceptionHandler(WebClientResponseException.class)
+    public ResponseEntity<ErrorResponseDto> handleWebClientResponseException(
+            WebClientResponseException e,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity.status(e.getStatusCode())
+                .body(new ErrorResponseDto(
+                        LocalDateTime.now(),
+                        e.getStatusCode().value(),
+                        e.getStatusCode().toString(),
                         e.getMessage(),
                         request.getRequestURI()
                 ));
